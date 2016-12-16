@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="info.css" />
+
+	</head>
+
+	<body>
+		<!-----------------------------选人物-------------------->
+		<div class="ck">
+			<img src="img/cBg.png" class="bg" />
+			<div class="p1">
+				<div class="pic"><img src="img/RMB0.png" /></div>
+				<div class="pic"><img src="img/RMB1.png" /></div>
+				<div class="pic"><img src="img/RMB2.png" /></div>
+				<div class="pic"><img src="img/RMB3.png" /></div>
+				<div class="pic"><img src="img/RMB4.png" /></div>
+			</div>
+			<div class="p2">
+				<div class="pic pic1">
+					<div></div>
+					<p>白客</p>
+				</div>
+				<div class="pic pic2">
+					<div></div>
+					<p>韩雪</p>
+				</div>
+				<div class="pic pic3">
+					<div></div>
+					<p>明道</p>
+				</div>
+				<div class="pic pic4">
+					<div></div>
+					<p>刘语煕</p>
+				</div>
+				<div class="pic pic5">
+					<div></div>
+					<p>徐开骋</p>
+				</div>
+			</div>
+			<img src="img/enter_up.png" class="in" />
+		</div>
+		<div class="blackBoard">
+			<div class="click">
+				<img src="img/click-here.png" />
+			</div>
+		</div>
+		<div class="again">
+			<div class="ban"></div>
+			<div class="w">再来一次</div>
+		</div>
+		<div class="boom"></div>
+		<div class="btn">
+			<img src="img/up_G.png" />
+		</div>
+		</div>
+		<div class="gameBg">
+			<div class="score"></div>
+			<div id="renwu">
+				<img src="" class="ren" />
+				<div class="mubang"></div>
+				<div class="xi">
+					<div class="c"></div>
+				</div>
+			</div>
+			<div class="gameTime">Time:<span>30</span></div>
+			<div class="cloud cloud1"></div>
+			<div class="cloud cloud2"></div>
+			<div class="cloud cloud3"></div>
+			<div class="cloud cloud4"></div>
+			<div class="cloud cloud5"></div>
+			<div class="cloud cloud6"></div>
+			<div class="cloud cloud7"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var blackBoard = document.querySelector('.blackBoard');
+		var again = document.querySelector('.again');
+		var againW = document.querySelector('.again .w');
+		var clouds = document.querySelectorAll('.gameBg .cloud');
+		var gameBg = document.querySelector('.gameBg');
+		var boom = document.querySelector('.boom');
+		var thingsArr = [];
+		var renwu = document.querySelector('#renwu');
+		var ren = document.querySelector('.ren');
+		var xi = document.querySelector('.xi');
+		var bang = document.querySelector('.mubang');
+		var gameTime = document.querySelector('.gameTime span');
+		var c = document.querySelector('.c');
+		var sBox = document.querySelector('.score');
+		var btn = document.querySelector('.btn img');
+		var btnT = document.querySelector('.btn');
+		var score = 0; //初始分数
+		bang.bol = true; //木棒伸缩开关
+		var g_start = false; //马桶吸开关，没返回 不能继续触发；	
+		var gT =30; //游戏时长
+		var TimeOff = true; //倒计时开关
+		var ThingImgArr = [{
+			"type": "1",
+			"src": "img/bag.png"
+		}, {
+			"type": "2",
+			"src": "img/bike.png"
+		}, {
+			"type": "3",
+			"src": "img/camera.png"
+		}, {
+			"type": "4",
+			"src": "img/comptuer.png"
+		}, {
+			"type": "5",
+			"src": "img/erji.png"
+		}, {
+			"type": "6",
+			"src": "img/moble.png"
+		}, {
+			"type": "7",
+			"src": "img/ipad.png"
+		}, {
+			"type": "0",
+			src: "img/boom.jpg"
+		}];
+		//选人物页面------------------------------------------------------------------
+		var ck = document.querySelector('.ck');
+		var bigpeo = document.querySelector('.ck .p1');
+		var go = document.querySelector('.ck .in');
+		var smallbtn = document.querySelectorAll('.ck .p2 .pic');
+		var smallTou = document.querySelectorAll('.ck .p2 .pic div');
+		var Num = 0;
+		var cT = false;
+		for(var i = 0; i < smallbtn.length; i++) {
+			smallbtn[i].index = i;
+			smallbtn[i].onclick = function() {
+				event.stopPropagation();
+				bigpeo.style.left = this.index * -100 + "%";
+				bigpeo.style.transition = "left 0.5s linear";
+				for(var j = 0; j < smallbtn.length; j++) {
+					smallbtn[j].style.color = "black";
+					smallTou[j].style.border = "";
+				}
+				this.style.color = "red";
+				smallTou[this.index].style.border = "1px red solid";
+				Num = this.index;
+				cT = true;
+			}
+		}
+		go.onclick = function() {
+			event.stopPropagation();
+			this.src = "img/enter_down.png";
+			if(cT) {
+				setTimeout(function() {
+					gameBg.style.display="block";
+					btnT.style.display="block";
+					go.src = "img/enter_up.png";
+					ren.src="img/R"+Num+".png";
+					xi.style.top = bang.offsetTop + bang.clientHeight + "px";
+					ck.style.display = "none";
+					//			window.location.href="game.html";
+
+				}, 200);
+			} else {
+				this.src = "img/enter_up.png";
+				alert("请选择人物");
+			}
+		}
+
+		//字体设置------------------------------------------------------------------
+		;(function() {
+			var html = document.documentElement;
+			var windowWidth = html.clientWidth;
+			var offsetWidth = html.offsetWidth;
+			var maxWidth = Math.max(windowWidth, offsetWidth);
+			if(maxWidth >= 414) { //ipad
+				maxWidth = 414;
+			}
+			html.style.fontSize = maxWidth / 7.5 + 'px';
+		})();
+		//随机数函数
+		function rand(min, max) {
+			return parseInt(Math.random() * (max - min) + min);
+		}
+		// 增加分数的函数
+		function addScore(score) {
+			var string = String(score);
+			var num = 1;
+			console.log(string.length);
+
+			sBox.innerHTML = '';
+
+			for(var i = 0; i < string.length; i++) {
+				var s = parseInt(score % (num * 10) / num);
+				num *= 10;
+
+				var imageS = document.createElement('img');
+				imageS.src = "img/" + s + ".png";
+				imageS.className = "imgS";
+				sBox.insertBefore(imageS, sBox.children[0]);
+
+			}
+		}
+
+		function CloudMove() {
+			//给云移动设置开关，并设置属性
+			for(var i = 0; i < clouds.length; i++) {
+				clouds[i].bol = 0; //云运动开关  
+				clouds[i].speed = rand(3, 6);
+				var thing = document.createElement('img');
+				thing.className = "thing";
+				thing.src = ThingImgArr[i].src;
+				thing.type = ThingImgArr[i].type;
+				//			console.log(thing.type);
+				thingsArr.push(thing);
+				clouds[i].appendChild(thing);
+			}
+			xi.style.top = bang.offsetTop + bang.clientHeight + "px";
+			clouds.timer = setInterval(function() {
+				for(var i = 0; i < 7; i++) {
+					if(clouds[i].bol == 1) {
+						clouds[i].style.left = clouds[i].offsetLeft + clouds[i].speed + 'px';
+						if(clouds[i].offsetLeft >= gameBg.offsetWidth - clouds[i].offsetWidth) {
+							clouds[i].bol = 2;
+						}
+					} else if(clouds[i].bol == 2) {
+						clouds[i].style.left = clouds[i].offsetLeft - clouds[i].speed + 'px';
+						if(clouds[i].offsetLeft <= 0) {
+							clouds[i].bol = 1;
+						}
+					}
+				}
+			}, 30);
+			//			btn.onclick =play;
+		}
+		CloudMove();
+		addScore(0);
+		//蒙板开始
+		blackBoard.onclick = function() {
+			this.style.display = "none";
+			return false;
+		}
+		btn.onclick = play;
+
+		function play() {
+			//进入游戏界面。
+			if(gT == 0) {
+				return;
+			}
+			if(TimeOff) {
+				//倒计时
+				var gTimer = setInterval(function() {
+					gT -= 1;
+					gameTime.innerHTML = gT;
+					if(gT == 0) {
+						clearInterval(gTimer);
+						clearInterval(clouds.timer);
+						for(var i = 0; i < clouds.length; i++) { //时间到，云停下来
+							clouds[i].bol = 0;
+						}
+						again.style.display = "flex";
+						return;
+					}
+				}, 1000);
+				for(var i = 0; i < clouds.length; i++) { //时间开始倒计时，云动
+					clouds[i].bol = true;
+				}
+			}
+			TimeOff = false;
+			if(g_start) {
+				return;
+			}
+			btn.src = "img/down_G.png";
+			setTimeout(function() {
+				btn.src = "img/up_G.png";
+			}, 200);
+			g_start = true;
+			var num2 = 0;
+			var carshTime = setInterval(function() {
+				if(bang.bol) {
+					bang.style.height = bang.offsetHeight + 15 + "px";
+					for(var i = 0; i < thingsArr.length; i++) {
+						clouds[i].index = i;
+						if(xi.offsetTop > clouds[i].offsetTop &&
+							xi.offsetTop < clouds[i].offsetTop + clouds[i].offsetHeight / 2 &&
+							xi.offsetLeft + renwu.offsetLeft > clouds[i].offsetLeft &&
+							xi.offsetWidth + xi.offsetLeft + renwu.offsetLeft > clouds[i].offsetLeft) {
+							//碰到了
+							bang.bol = false;
+							var a = clouds[i].index;
+							score.index++;
+							thingsArr[a].style.display = "none";
+							//随机第几个物品
+							var randb = rand(0, 10);
+							var b;
+							if(randb < 1) { //炸弹
+								b = 7;
+							} else if(randb > 1 && randb <= 2) {
+								b = 6;
+							} else if(randb > 2 && randb <= 3) {
+								b = 5;
+							} else if(randb > 3 && randb <= 4) {
+								b = 4;
+							} else if(randb > 4 && randb <= 5) {
+								b = 3;
+							} else if(randb > 5 && randb <= 6) {
+								b = 2;
+							} else if(randb > 6 && randb <= 7) {
+								b = 1;
+							} else {
+								b = 0;
+							}
+							//加分并显示
+							score += thingsArr[a].type * 31;
+							addScore(score);
+							console.log(score);
+							var littleThing = document.createElement('img');
+							littleThing.src = thingsArr[a].src;
+							littleThing.className = "xc";
+							console.log(thingsArr[a].type);
+							if(thingsArr[a].type == 0) {
+								ren.src = "img/md_b.png";
+								setTimeout(function() {
+									boom.style.display = "block";
+								}, 100)
+								setTimeout(function() {
+									ren.src="img/R"+Num+".png";
+									boom.style.display = "none";
+								}, 1000);
+							}
+							c.appendChild(littleThing);
+							setTimeout(function() {
+								thingsArr[a].src = ThingImgArr[b].src;
+								thingsArr[a].type = ThingImgArr[b].type;
+								thingsArr[a].style.display = "block";
+							}, 300);
+
+						}
+					}
+					if(xi.offsetTop >= gameBg.offsetHeight) {
+						bang.bol = false;
+					}
+				} else {
+					bang.style.height = bang.offsetHeight - 15 + "px";
+					//木棒恢复原来高度 才能继续按下
+					if(bang.offsetHeight < ren.offsetHeight / 2) {
+						clearInterval(carshTime);
+						bang.bol = true;
+						g_start = false;
+						c.innerHTML = "";
+					}
+				}
+				xi.style.top = bang.offsetTop + bang.clientHeight + "px";
+			}, 30)
+			return false;
+		}
+		//再来一次
+		againW.onclick = function() {
+			thingsArr = [];
+			for(var i = 0; i < clouds.length; i++) {
+				clouds[i].innerHTML = "";
+			}
+			sBox.innerHTML = "";
+			score = 0; //初始分数
+			addScore(score);
+			bang.bol = true; //木棒伸缩开关
+			g_start = false; //马桶吸开关，没返回 不能继续触发；	
+			gT = 30; //游戏时长
+			gameTime.innerHTML = gT;
+			TimeOff = true; //倒计时开关
+			CloudMove();
+			again.style.display = "none";
+			btn.onclick = play;
+		}
+	</script>
+
+</html>
